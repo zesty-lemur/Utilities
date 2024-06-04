@@ -1,10 +1,34 @@
 import json
 import sys
-from jsonschema import validate
-from jsonschema.exceptions import ValidationError
+import subprocess
+import pkg_resources
 from datetime import datetime
 
+def install_package(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+def check_package_installed(package):
+    try:
+        dist = pkg_resources.get_distribution(package)
+        return True
+    except pkg_resources.DistributionNotFound:
+        return False
+
+def prompt_install_package(package):
+    user_input = input(f"The package '{package}' is not installed. Would you like to install it? (y/n): ").strip().lower()
+    if user_input == 'y':
+        install_package(package)
+    else:
+        print(f"The package '{package}' is required to run this script. Exiting.")
+        sys.exit(1)
+
 def main(schema_path, json_path, save_to_file=False):
+    if not check_package_installed("jsonschema"):
+        prompt_install_package("jsonschema")
+    
+    from jsonschema import validate
+    from jsonschema.exceptions import ValidationError
+
     # Load the JSON schema
     with open(schema_path, 'r') as schema_file:
         schema = json.load(schema_file)
