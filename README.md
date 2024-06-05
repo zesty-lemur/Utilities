@@ -6,6 +6,7 @@ A collection of command line utilities to solve annoying little problems.
 |Utility|Description|Link|
 |---|---|---|
 |[JSON Validation](#json-validation)|A tool to compare a JSON file to a schema, available in three flavours: PowerShell, Bash, and Python|[View](/json_validation)|
+|[Create Venv](#virtual-environment-creation)|A shell wrapper for `python -m venv` *⚠️ **See Warning***|[View](/venv_creation/)|
 
 ## JSON Validation
 
@@ -28,3 +29,17 @@ Notes:
 - Using the tool with Python:
   - The `jsonschema` library is required for the validation checks; the script will check if it's installed and, if not, will prompt the user to approve installation.
  
+## Virtual Environment Creation
+
+<div style="border: 2px solid red; padding: 10px;">
+⚠️ <b>Warning!</b> This is still buggy, and requires further work. It should be used with caution, if at all, until fixed!
+</div><br>
+
+A simple shell wrapper for the `python -m venv` command to create and rebuild virtual environments, and easily handle package installation and deltas between the installed packages and the requirements file.
+
+Available in two flavours:
+
+- [PowerShell](venv_creation\create_venv.ps1)
+- [Bash](venv_creation\create_venv.sh)
+
+Run the script with the `--help` flag for info on available commands and usage.
