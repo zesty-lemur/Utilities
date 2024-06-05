@@ -2,10 +2,23 @@ param(
     [string]$name = ".venv",
     [string]$reqFile = "requirements.txt",
     [switch]$rebuild,
-    [switch]$updateReqs
+    [switch]$updateReqs,
+    [switch]$help
 )
 
-function Create-VirtualEnv {
+if ($help) {
+    Write-Host "Usage: script.ps1 [--name ENV_NAME] [--req-file REQ_FILE] [--rebuild] [--update-reqs] [--help]"
+    Write-Host ""
+    Write-Host "Options:"
+    Write-Host "  --name         Name of the virtual environment (default: .venv)"
+    Write-Host "  --req-file     Path to the requirements file (default: requirements.txt)"
+    Write-Host "  --rebuild      Rebuild the virtual environment"
+    Write-Host "  --update-reqs  Update the requirements file with missing packages"
+    Write-Host "  --help         Display this help message"
+    exit
+}
+
+function New-VirtualEnv {
     param(
         [string]$envName
     )
@@ -24,7 +37,7 @@ function Install-Requirements {
     }
 }
 
-function Rebuild-VirtualEnv {
+function Redo-VirtualEnv {
     param(
         [string]$envName
     )
@@ -32,7 +45,7 @@ function Rebuild-VirtualEnv {
         Write-Host "Deactivating and rebuilding the virtual environment..."
         & "$envName\Scripts\deactivate"
         Remove-Item -Recurse -Force $envName
-        Create-VirtualEnv $envName
+        New-VirtualEnv $envName
         Install-Requirements $reqFile
     }
 }
@@ -65,10 +78,10 @@ function Update-Requirements {
 if ($rebuild) {
     $confirm = Read-Host "Are you sure you want to rebuild the virtual environment? (y/n)"
     if ($confirm -eq 'y') {
-        Rebuild-VirtualEnv $name
+        Redo-VirtualEnv $name
     }
 } else {
-    Create-VirtualEnv $name
+    New-VirtualEnv $name
     Install-Requirements $reqFile
 }
 

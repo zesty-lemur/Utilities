@@ -1,5 +1,17 @@
 #!/bin/bash
 
+if [[ "$1" == "--help" ]]; then
+    echo "Usage: script.sh [--name ENV_NAME] [--req-file REQ_FILE] [--rebuild] [--update-reqs] [--help]"
+    echo ""
+    echo "Options:"
+    echo "  --name         Name of the virtual environment (default: .venv)"
+    echo "  --req-file     Path to the requirements file (default: requirements.txt)"
+    echo "  --rebuild      Rebuild the virtual environment"
+    echo "  --update-reqs  Update the requirements file with missing packages"
+    echo "  --help         Display this help message"
+    exit 0
+fi
+
 ENV_NAME=".venv"
 REQ_FILE="requirements.txt"
 REBUILD=false
